@@ -6,7 +6,7 @@ RSpec.describe "Acesso ao Dashboard", type: :system do
   context "quando o usuário não está logado" do
     it "redireciona para a página de login" do
       # 1. Tenta acessar a página protegida
-      visit dashboard_index_path
+      visit root_path #antes era dashboard_index_path
       
       # 2. Espera ser redirecionado para a tela de login
       expect(page).to have_current_path(new_user_session_path)
