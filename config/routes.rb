@@ -15,9 +15,7 @@
 #   # root "posts#index"
 # end
 
-# config/routes.rb
 Rails.application.routes.draw do
-
   # 1. Definimos a Rota Raiz (Instrução 2 do Devise)
   # Quando um usuário logado acessar a "homepage" (http://localhost:3000/),
   # ele será levado ao DashboardController, ação 'index'.
@@ -34,4 +32,15 @@ Rails.application.routes.draw do
   # 3. A rota do dashboard que o gerador criou (get 'dashboard/index')
   # é agora redundante, pois a 'root' aponta para ela.
   # Podemos deletar a linha 'get "dashboard/index"' se ela ainda existir.
+
+  #get "stocks/search"
+  # --- Nossas Novas Rotas ---
+  # Remove a linha 'get "stocks/search"' que o gerador criou.
+  # E adicione estas:
+  
+  # 1. A rota GET para a página
+  get 'stocks/search', to: 'stocks#search', as: 'stocks_search'
+  
+  # 2. A rota POST que o formulário vai usar
+  post 'stocks/search', to: 'stocks#search'
 end

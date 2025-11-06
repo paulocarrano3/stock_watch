@@ -1,0 +1,29 @@
+<!-- <div>
+  <h1 class="font-bold text-4xl">Stocks#search</h1>
+  <p>Find me in app/views/stocks/search.html.erb</p>
+</div> -->
+<h1 class="text-2xl font-bold">Pesquisar Ações</h1>
+
+<%= form_with(url: stocks_search_path, method: :post, local: true, data: { turbo: false }) do |form| %>
+  <div class="mb-4">
+    <%= form.label :ticker, "Ticker da Ação", class: "block mb-2" %>
+    <%= form.text_field :ticker, class: "border p-2 rounded w-full" %>
+  </div>
+
+  <div>
+    <%= form.submit "Search", class: "bg-blue-500 text-white p-2 rounded" %>
+  </div>
+<% end %>
+
+<div id="stock-results" class="mt-8">
+  <% if @stock_data %>
+    <h2 class="text-xl font-semibold">Resultados para: <%= @ticker %></h2>
+    <p>Preço Atual: <%= number_to_currency(@stock_data[:price]) %></p>
+    <p>Variação %: <%= number_to_percentage(@stock_data[:percent_change], precision: 2, format: '%n%') %></p>
+  
+    <% end %>
+
+  <% if @error %>
+    <p class="text-red-500"><%= @error %></p>
+  <% end %>
+</div>
