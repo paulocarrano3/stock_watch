@@ -1,4 +1,37 @@
-<div>
-  <h1 class="text-2xl font-bold">Dashboard de Ações</h1>
-  <p>Bem-vindo, <%= current_user.email %>!</p>
+<h1 class="text-2xl font-bold">Meu Dashboard de Ações</h1>
+<%= link_to "Pesquisar Nova Ação", stocks_search_path, class: "text-blue-500 hover:underline mb-4 inline-block" %>
+<p class="mb-6">Bem-vindo, <%= current_user.email %>!</p>
+
+<div id="followed-stocks">
+  <% if @followed_stocks.any? %>
+    
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ticker</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Preço (Stale)</th>
+          </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        
+        <% @followed_stocks.each do |stock| %>
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+              <%= stock.ticker %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <%= number_to_currency(stock.last_price) %>
+            </td>
+          </tr>
+        <% end %>
+        
+      </tbody>
+    </table>
+
+  <% else %>
+    
+    <p>Você ainda não segue nenhuma ação.</p>
+    <%= link_to "Comece a pesquisar!", stocks_search_path, class: "text-blue-500 hover:underline" %>
+
+  <% end %>
 </div>
