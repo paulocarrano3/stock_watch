@@ -1,4 +1,5 @@
 # Rails.application.routes.draw do
+
 #   get "dashboard/index"
 #   devise_for :users
 #   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -43,4 +44,8 @@ Rails.application.routes.draw do
   
   # 2. A rota POST que o formulário vai usar
   post 'stocks/search', to: 'stocks#search'
+
+  resources :user_stocks, only: [:create]
+
+  #get "user_stocks/create" adicionada automaticamente lá no topo
 end

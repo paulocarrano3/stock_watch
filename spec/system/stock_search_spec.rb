@@ -62,12 +62,37 @@ RSpec.describe "Busca de Ações", type: :system, js: true do
       # --------------------------
     end
 
-    it "mostra os resultados da busca na página" do
+    it "mostra os resultados da busca na página e permite seguir a ação" do
       # ... (o resto do 'it' fica exatamente igual)
       visit stocks_search_path
       fill_in "Ticker da Ação", with: "AAPL"
       click_button "Search"
       # ...
+      # Verificações de Busca
+      expect(page).to have_content("AAPL")
+      expect(page).to have_content("$123.45") # (Lembre-se, o teste usa o MOCK)
+
+      # --- Parte 2: O NOVO TESTE ---
+      
+      # 1. Espera que um botão "Follow" exista
+      expect(page).to have_button("Follow")
+
+      # 2. Verifica o banco ANTES do clique
+      expect(user.stocks.count).to eq(0)
+      
+      # 3. Clica no botão
+      click_button "Follow"
+
+      # 4. Verifica o resultado
+      # Esperamos ser redirecionados de volta ao Dashboard (root_path)
+      expect(page).to have_current_path(root_path)
+      
+      # Esperamos ver uma mensagem de sucesso
+      expect(page).to have_content("Ação AAPL seguida com sucesso!")
+      
+      # 5. Verifica o banco DEPOIS do clique
+      expect(user.stocks.count).to eq(1)
+      expect(user.stocks.first.ticker).to eq("AAPL")
     end
   end
   

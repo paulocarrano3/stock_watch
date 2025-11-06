@@ -20,7 +20,13 @@
     <h2 class="text-xl font-semibold">Resultados para: <%= @ticker %></h2>
     <p>Preço Atual: <%= number_to_currency(@stock_data[:price]) %></p>
     <p>Variação %: <%= number_to_percentage(@stock_data[:percent_change], precision: 2, format: '%n%') %></p>
-  
+
+    <%= form_with(url: user_stocks_path, method: :post, local: true, data: { turbo: false }) do |form| %>
+      
+      <%= form.hidden_field :ticker, value: @ticker %>
+      
+      <%= form.submit "Follow" %>
+    <% end %>
     <% end %>
 
   <% if @error %>
