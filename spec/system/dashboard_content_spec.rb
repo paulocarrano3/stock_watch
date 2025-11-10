@@ -25,7 +25,7 @@ RSpec.describe "Conteúdo do Dashboard", type: :system, js: true do
       UserStock.create!(user: user, stock: stock2)
     end
 
-    it "lista as ações seguidas no dashboard" do
+    it "lista as ações seguidas no dashboard e permite o unfollow" do
       login_as(user)
       visit root_path
 
@@ -37,6 +37,26 @@ RSpec.describe "Conteúdo do Dashboard", type: :system, js: true do
       expect(page).to have_content("$300.00")
       
       expect(page).to_not have_content("Você ainda não segue nenhuma ação.")
+
+      # 1. Encontre a "linha" da tabela que tem "AAPL"
+      #    e clique no botão "Unfollow" *dentro* dela.
+      #    Isso garante que não clicamos no "Unfollow" do "MSFT".
+      find("tr", text: "AAPL").click_button("Unfollow")
+
+      # 2. Verifique o resultado
+      # Esperamos uma mensagem de sucesso
+      expect(page).to have_content("Ação AAPL deixou de ser seguida.")
+      # AGORA, verifique o conteúdo *dentro* da div da tabela
+      # Nosso <div id="followed-stocks"> do dashboard.html.erb
+      within("#followed-stocks") do
+        expect(page).to_not have_content("AAPL")
+        expect(page).to have_content("MSFT")
+      end
+      # "MSFT" deve continuar lá (MUITO importante)
+      expect(page).to have_content("MSFT")
+      
+      # O banco de dados deve refletir a mudança
+      expect(user.user_stocks.count).to eq(1)
     end
   end
 end
