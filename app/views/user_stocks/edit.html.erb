@@ -1,0 +1,21 @@
+<h1 class="text-2xl font-bold">
+  Editar posição em <%= @user_stock.stock.ticker %>
+</h1>
+
+<%= form_with(model: @user_stock, local: true, data: { turbo: false }) do |form| %>
+  <div class="my-4">
+    <%= form.label :units, "Quantidade", class: "block mb-2" %>
+    <%= form.text_field :units, class: "border p-2 rounded" %>
+  </div>
+  
+  <div class="my-4">
+    <%= form.label :average_price, "Preço Médio", class: "block mb-2" %>
+    <%= form.text_field :average_price, class: "border p-2 rounded" %>
+  </div>
+  
+  <div>
+    <%= form.submit "Salvar Alterações", class: "bg-blue-500 text-white p-2 rounded" %>
+  </div>
+<% end %>
+
+<%= link_to "Cancelar", user_stock_path(@user_stock), class: "ml-2 text-gray-500" %>

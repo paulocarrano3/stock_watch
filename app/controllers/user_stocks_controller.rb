@@ -1,6 +1,30 @@
 class UserStocksController < ApplicationController
   before_action :authenticate_user!
   
+  # Adiciona um "filtro" para buscar o UserStock (a "ponte")
+  # ANTES das ações show, edit, e update.
+  before_action :set_user_stock, only: [:show, :edit, :update]
+
+  def show
+    # @user_stock já foi definido pelo 'set_user_stock'
+  end
+
+  def edit
+    # @user_stock já foi definido pelo 'set_user_stock'
+  end
+  
+  def update
+    # @user_stock já foi definido pelo 'set_user_stock'
+    if @user_stock.update(user_stock_params)
+      # 1. Sucesso: Salva e redireciona para a pág de "Detalhes"
+      flash[:notice] = "Posição atualizada com sucesso!"
+      redirect_to user_stock_path(@user_stock)
+    else
+      # 2. Falha: Renderiza a página de 'edit' novamente com os erros
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   def create
     # 1. Pegar o ticker que o formulário escondeu
     ticker = params[:ticker]
@@ -53,5 +77,19 @@ class UserStocksController < ApplicationController
     end
     # 4. Volte para o Dashboard
     redirect_to root_path
+  end
+
+  private
+
+  def set_user_stock
+    # Busca o "follow" (UserStock)
+    # MAS, por segurança, busca APENAS dentro dos 'follows' do usuário logado
+    @user_stock = current_user.user_stocks.find(params[:id])
+  end
+
+  # Esta é a "lista de permissões" de segurança do Rails.
+  # Ele SÓ permite que os campos :units e :average_price venham do formulário.
+  def user_stock_params
+    params.require(:user_stock).permit(:units, :average_price)
   end
 end

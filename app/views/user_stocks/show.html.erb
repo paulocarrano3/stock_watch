@@ -1,0 +1,51 @@
+<%
+  if @user_stock.profit_loss_amount.zero?
+    pl_color_class = "text-gray-700" # Cor neutra
+  elsif @user_stock.profit_loss_amount > 0
+    pl_color_class = "text-green-600" # Lucro
+  else
+    pl_color_class = "text-red-600" # Prejuízo
+  end
+%>
+
+<h1 class="text-2xl font-bold">
+  Detalhes de <%= @user_stock.stock.ticker %>
+</h1>
+
+<div class="my-6 space-y-4">
+  <p><strong>Unidades:</strong> <%= @user_stock.units %></p>
+  <p><strong>Preço Médio:</strong> <%= number_to_currency(@user_stock.average_price) %></p>
+</div>
+
+<div class="my-6 p-4 border rounded space-y-4 mb-8">
+  <h2 class="text-lg font-semibold">Resumo do Portfólio</h2>
+  
+  <p><strong>Total investido:</strong> 
+    <%= number_to_currency(@user_stock.total_cost) %>
+  </p>
+  <p><strong>Posição atual:</strong> 
+    <%= number_to_currency(@user_stock.market_value) %>
+  </p>
+  
+  <p>
+    <strong>Lucro/Prejuízo: </strong> 
+    <span class="font-bold <%= pl_color_class %>">
+      <%= number_to_currency(@user_stock.profit_loss_amount) %>
+    </span>
+  </p>
+  
+  <p>
+    <strong>Variação (%): </strong>
+    <span class="font-bold <%= pl_color_class %>">
+      <%= number_to_percentage(@user_stock.profit_loss_percent, precision: 2, format: '%n%') %>
+    </span>
+  </p>
+</div>
+
+<%= link_to "Editar Portfólio", 
+      edit_user_stock_path(@user_stock), 
+      class: "bg-blue-500 text-white p-2 rounded" %>
+
+<%= link_to "Voltar ao Dashboard", 
+      root_path, 
+      class: "ml-2 text-gray-500" %>

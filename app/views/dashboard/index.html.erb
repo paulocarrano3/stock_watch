@@ -13,15 +13,17 @@
           </tr>
       </thead>
       <tbody class="bg-white divide-y divide-gray-200">
-        
         <% @followed_stocks.each do |stock| %>
           <tr>
+
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
               <%= stock.ticker %>
             </td>
+
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
               <%= number_to_currency(stock.last_price) %>
             </td>
+
             <td class="px-6 py-4 whitespace-nowrap text-sm">
                 <%= button_to "Unfollow",
                     user_stock_path(stock),  
@@ -29,16 +31,27 @@
                     data: { turbo: false },
                     class: "text-red-600 hover:text-red-900" %>
             </td>
+
+            <td class="px-6 py-4 whitespace-nowrap text-sm">
+              <%#
+                O 'stock' (AAPL) é o que vemos na tabela,
+                mas o que queremos editar é a *relação* (o UserStock).
+                Precisamos encontrar o UserStock que liga o 'current_user' a este 'stock'.
+              %>
+              <% user_stock = current_user.user_stocks.find_by(stock_id: stock.id) %>
+              
+              <%= link_to "Detalhes", 
+                    user_stock_path(user_stock), # -> /user_stocks/1
+                    class: "text-blue-600 hover:text-blue-900" %>
+            </td>
           </tr>
         <% end %>
-        
       </tbody>
     </table>
 
   <% else %>
-    
     <p>Você ainda não segue nenhuma ação.</p>
     <%= link_to "Comece a pesquisar!", stocks_search_path, class: "text-blue-500 hover:underline" %>
-
   <% end %>
+  
 </div>

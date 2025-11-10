@@ -45,7 +45,7 @@ Rails.application.routes.draw do
   # 2. A rota POST que o formulário vai usar
   post 'stocks/search', to: 'stocks#search'
 
-  resources :user_stocks, only: [:create, :destroy]
+  resources :user_stocks, only: [:create, :destroy, :show, :edit, :update]
 
   #get "user_stocks/create" adicionada automaticamente lá no topo
 end
