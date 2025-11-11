@@ -69,3 +69,5 @@ end
 
 gem "devise"
 gem "faraday"
+gem "sidekiq"
+gem "sidekiq-cron"

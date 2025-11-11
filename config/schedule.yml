@@ -1,0 +1,4 @@
+update_stock_prices:
+  cron: "*/10 * * * *" # <-- Esta é a "hora do alarme"
+  class: "StockPriceUpdaterJob" # <-- Este é o "manual de instruções" para rodar
+  queue: "default"
